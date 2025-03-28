@@ -2,16 +2,16 @@
     {
         "nombre": "gaseosa",
         "precio": "2000",
-        "cantidad": "10"
+        "cantidad": "3"
     },
     {
-        "nombre": "gaseosa",
-        "precio": 2011,
-        "cantidad": 12
+        "nombre": "mayonesa",
+        "precio": "12",
+        "cantidad": "1"
     },
     {
-        "nombre": "pan",
-        "precio": "1200",
-        "cantidad": "21"
+        "nombre": "mostasa",
+        "precio": "1233",
+        "cantidad": "5"
     }
 ]

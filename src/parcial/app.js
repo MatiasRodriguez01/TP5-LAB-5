@@ -20,14 +20,8 @@ const crear_producto = () => {
     });
 };
 
-const crear_json = (productos) => {
-    fs.writeFile('productos.json', JSON.stringify(productos, null, 4), (err) => {
-        if (err) {
-            console.error("Error al guardar el archivo:", err);
-        } else {
-            console.log("Productos guardados en el archivo.");
-        }
-    });
+const crear_json = (productos, archivo) => {
+    fs.writeFileSync(archivo, JSON.stringify(productos, null, 4));
 };
 
 const leer_json = async (archivo) => {
@@ -35,28 +29,32 @@ const leer_json = async (archivo) => {
         if (!fs.existsSync(archivo)) {
             console.log("No se encontró el archivo. Creando un nuevo archivo.");
             const nuevo_producto = await crear_producto();
-            crear_json([nuevo_producto]);
-        } else {
-            const data = await fs.promises.readFile(archivo, 'utf-8');
+            crear_json([nuevo_producto], archivo);
             console.log("Contenido del archivo productos.json:");
-            console.log(data);
-            await agregar_nuevo(archivo);
+            console.log([nuevo_producto]);
+            await agregar_nuevo([nuevo_producto], archivo);
+        } else {
+            const data = fs.readFileSync(archivo, 'utf-8');
+            const productos = JSON.parse(data);
+            console.log("Contenido del archivo productos.json:");
+            console.log(productos);
+            await agregar_nuevo(productos, archivo);
         }
     } catch (err) {
         console.error("Error al procesar el archivo: ", err);
     }
 };
 
-const agregar_nuevo = async (archivo) => {
+const agregar_nuevo = async (productos, archivo) => {
     rl.question("¿Desea agregar otro producto? (s/n): ", async (respuesta) => {
         if (respuesta.toLowerCase() === 's') {
             const nuevo_producto = await crear_producto();
-            const data = await fs.promises.readFile(archivo, 'utf-8');
-            const productos = JSON.parse(data);
             productos.push(nuevo_producto);
-            crear_json(productos);
+            crear_json(productos, archivo);
             console.log("Producto agregado.");
-            await agregar_nuevo(archivo);
+            console.log("Contenido actualizado del archivo productos.json:");
+            console.log(productos);
+            await agregar_nuevo(productos, archivo);
         } else {
             console.log("No se agregaron más productos.");
             rl.close();
@@ -73,8 +71,6 @@ const argv = yargs(hideBin(process.argv))
     })
     .argv;
 
-if (argv._.includes("archivo")) {
+if (argv._.includes("f")) {
     leer_json(argv.file);
-} else {
-    console.log("Por favor, use el comando 'archivo' para leer o crear el archivo.");
-}
+} 
