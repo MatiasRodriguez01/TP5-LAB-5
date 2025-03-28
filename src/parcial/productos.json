@@ -1,0 +1,17 @@
+[
+    {
+        "nombre": "gaseosa",
+        "precio": "2000",
+        "cantidad": "10"
+    },
+    {
+        "nombre": "gaseosa",
+        "precio": 2011,
+        "cantidad": 12
+    },
+    {
+        "nombre": "pan",
+        "precio": "1200",
+        "cantidad": "21"
+    }
+]
